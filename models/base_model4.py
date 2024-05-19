@@ -1,14 +1,15 @@
 from datetime import datetime
 from uuid import uuid4
 from __init__ import storage
-import json
 
 
 class BaseModel:
 
     def __init__(self, *args, **kwargs):
+        self.id = str(uuid4()) #generate unique id for each instance
+        self.created_at = self.updated_at = datetime.now()
 
-        if not kwargs:#check if its a new instance
+        if not kwargs:#check if its a new instance and store it
             storage.new(self)
 
 
@@ -25,9 +26,9 @@ class BaseModel:
                      
                 setattr(self, key, obj_value)
 
-        else:
-            self["id"] = str(uuid4())
-            self.created_at = self.updated_at = datetime.now()
+        #else:
+          #  self["id] = str(uuid4())
+            #self.created_at = self.updated_at = datetime.now()
 
 
 
