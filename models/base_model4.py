@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import uuid4
-from __init__ import storage
+from models import storage
 
 
 class BaseModel:
