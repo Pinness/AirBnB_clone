@@ -2,7 +2,7 @@
 """Defines the HBNB console."""
 import cmd
 import sys
-from models import file_storage
+from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
