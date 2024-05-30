@@ -18,14 +18,14 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
 
-    __classes = { "BaseModel",
-        "User",
-        "State",
-        "City",
-        "Amenity",
-        "Place",
-        "Review"
-        }
+    __classes = { 'BaseModel': BaseModel,
+            'User': User,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Place': Place,
+            'Review': Review
+            }
 
     def emptyline(self):
         """Ignore empty spaces."""
@@ -142,17 +142,16 @@ class HBNBCommand(cmd.Cmd):
         """Usage: all or all <class> or <class>.all()
         Display string representations of all instances of a given class.
         If no class is specified, displays all instantiated objects."""
-        if not line:
-            obj_dict = models.storage.all()
-            print([str(obj) for obj in obj_dict.values()])
 
+        obj_dict = storage.all()
+        if not line:
+            print([str(obj) for obj in obj_dict.values()])
         else:
             try:
-                args = line.split(" ")
-                if args[0] not in self.__classes:
+                if line not in self.__classes:
                     raise NameError()
-                obj_dict = models.storage.all(self.__classes[args[0]])
-                print([str(obj) for obj in obj_dict.values() if isinstance(obj, self.__classes[args[0]])])
+
+                print([str(obj) for obj in obj_dict.values() if isinstance(obj, self.__classes[line])])
 
             except NameError:
                 print("** class doesn't exist **")
