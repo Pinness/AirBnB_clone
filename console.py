@@ -17,15 +17,15 @@ class HBNBCommand(cmd.Cmd):
     """Defines the HolbertonBnB command interpreter."""
 
     prompt = "(hbnb) "
-    __classes = {
-        "BaseModel",
+
+    __classes = { "BaseModel",
         "User",
         "State",
         "City",
         "Amenity",
         "Place",
         "Review"
-    }
+        }
 
     def emptyline(self):
         """Ignore empty spaces."""
@@ -48,7 +48,8 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-
+            if my_list[0] not in self.__classes:
+                raise NameError()
             kwargs = {}
             for i in range(1, len(my_list)):
                 key, value = tuple(my_list[i].split("="))
@@ -142,19 +143,19 @@ class HBNBCommand(cmd.Cmd):
         Display string representations of all instances of a given class.
         If no class is specified, displays all instantiated objects."""
         if not line:
-            o = storage.all()
-            print([o[k].__str__() for k in o])
-            return
-        try:
-            args = line.split(" ")
-            if args[0] not in self.__classes:
-                raise NameError()
+            obj_dict = models.storage.all()
+            print([str(obj) for obj in obj_dict.values()])
 
-            o = storage.all(eval(args[0]))
-            print([o[k].__str__() for k in o])
+        else:
+            try:
+                args = line.split(" ")
+                if args[0] not in self.__classes:
+                    raise NameError()
+                obj_dict = models.storage.all(self.__classes[args[0]])
+                print([str(obj) for obj in obj_dict.values() if isinstance(obj, self.__classes[args[0]])])
 
-        except NameError:
-            print("** class doesn't exist **")
+            except NameError:
+                print("** class doesn't exist **")
 
     def do_update(self, line):
         """Updates an instanceby adding or updating attribute
